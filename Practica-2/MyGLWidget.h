@@ -43,9 +43,9 @@ class MyGLWidget : public LL2GLWidget {
   glm::vec3 posCarVerde = glm::vec3(7.5f, 0.f, 0.f);
   glm::vec3 posCarRojo = glm::vec3(9.f, 0.f, 0.f);
 
-  float angCarAzul = 0.f;
-  float angCarVerde = 0.f;
-  float angCarRojo = 0.f;
+  float angCarAzul = 0.f, angMoveCarAzul = 0.f;
+  float angCarVerde = 0.f, angMoveCarVerde = 0.f;
+  float angCarRojo = 0.f, angMoveCarRojo = 0.f;
 
 
   private:

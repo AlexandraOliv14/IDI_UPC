@@ -110,16 +110,16 @@ void MyGLWidget::paintGL()
 
   // Car
   glBindVertexArray (VAO_models[CAR]);
-  CarTransform(6.f,0.0f, angCarAzul, glm::vec3(0,0,1));
+  CarTransform(6.f, angCarAzul,angMoveCarAzul, glm::vec3(0,0,1));
   glDrawArrays(GL_TRIANGLES, 0, models[CAR].faces().size()*3);
 
-  // glBindVertexArray (VAO_models[CAR]);
-  // CarTransform(7.5f,0.0f, glm::vec3(0,1,0));
-  // glDrawArrays(GL_TRIANGLES, 0, models[CAR].faces().size()*3);
+  glBindVertexArray (VAO_models[CAR]);
+  CarTransform(7.5f,angCarVerde, angMoveCarVerde, glm::vec3(0,1,0));
+  glDrawArrays(GL_TRIANGLES, 0, models[CAR].faces().size()*3);
 
-  // glBindVertexArray (VAO_models[CAR]);
-  // CarTransform(9.f,0.0f, glm::vec3(1,0,0));
-  // glDrawArrays(GL_TRIANGLES, 0, models[CAR].faces().size()*3);
+  glBindVertexArray (VAO_models[CAR]);
+  CarTransform(9.f,angCarRojo, angMoveCarRojo, glm::vec3(1,0,0));
+  glDrawArrays(GL_TRIANGLES, 0, models[CAR].faces().size()*3);
 
   glBindVertexArray(0);
 }
@@ -196,11 +196,10 @@ void MyGLWidget::CarTransform (float radio, float angleAuto, float angleMove, gl
   // Calcula la nueva posición del auto
   glm::vec3 newPosition = centreEscena + direction*radio;
 
-  // Llama a CarTransform para mover el auto a la nueva posición
-  //CarTransform(newPosition.length(), angle, color);
+  // Transformaciones
   glm::mat4 TG(1.0f);
-  TG = glm::rotate(TG, glm::radians(angleAuto), glm::vec3(0,1,0));
   TG = glm::translate(TG, glm::vec3(newPosition));
+  TG = glm::rotate(TG, glm::radians(angleAuto), glm::vec3(0,1,0));
   TG = glm::translate(TG, -centreBaseModels[CAR]);
   glUniformMatrix4fv(transLoc, 1, GL_FALSE, &TG[0][0]);
 
@@ -224,9 +223,14 @@ void MyGLWidget::keyPressEvent(QKeyEvent *event)
   {
   case Qt::Key_Up:
   {
-    angCarAzul -= 1.0f;
-    angCarVerde -= 2.0f;
-    angCarRojo -= 3.0f;
+    angMoveCarAzul-= 2.0f;
+    angCarAzul += 2.0f;
+
+    angMoveCarVerde -= 3.0f;
+    angCarVerde += 3.0f;
+
+    angMoveCarRojo -= 4.0f;
+    angCarRojo += 4.0f;
     break;
   }
   case Qt::Key_C:
