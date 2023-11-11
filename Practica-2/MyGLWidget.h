@@ -26,6 +26,7 @@ class MyGLWidget : public LL2GLWidget {
 
     virtual void carregaShaders ();
     virtual void iniCamera();
+    virtual void iniCamera2();
 // viewTransform i projecTransform - Es fan servir per a construir i enviar als shader les matrius de càmera (View i Projection respectivament).
     virtual void viewTransform ();
     virtual void projectTransform ();
@@ -46,6 +47,8 @@ class MyGLWidget : public LL2GLWidget {
   float angCarAzul = 0.f, angMoveCarAzul = 0.f;
   float angCarVerde = 0.f, angMoveCarVerde = 0.f;
   float angCarRojo = 0.f, angMoveCarRojo = 0.f;
+
+  bool camaraPrimeraPersona = false;
 
 
   private:

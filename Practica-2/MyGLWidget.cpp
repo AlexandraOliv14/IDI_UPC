@@ -60,16 +60,40 @@ void MyGLWidget::initializeGL()
   LL2GLWidget::creaBuffersModels();
   LL2GLWidget::creaBuffersTerra();
   LL2GLWidget::iniEscena();
-  iniCamera();
+
+  LL2GLWidget::iniCamera();
+
+  if(!camaraPrimeraPersona){
+      iniCamera();
+    }else{
+      iniCamera2();
+    }
+  viewTransform();
+  projectTransform();
+  rotateObject(0.0f, 0.0f);
+  
 }
 
 void MyGLWidget::iniCamera()
 {
-  LL2GLWidget::iniCamera();
-  obs = glm::vec3(0, 10, 20);
-  fov=45.0f;
-  viewTransform();
-  rotateObject(0.0f, 0.0f);
+  obs = glm::vec3(0, 10, 50);
+  vrp = glm::vec3(0, 1, 0);
+  up = glm::vec3(0, 1, 0);
+  // fov=45.0f;
+  // znear =  1;
+  // zfar  = 50;
+    fov = 45.0f;
+    znear = 0.1f;
+    zfar = 2.0f * radiEscena;
+}
+void MyGLWidget::iniCamera2()
+{
+  obs = glm::vec3(7.5, 0.5, 0.5);
+  vrp = glm::vec3(7.5, 0.5, 0.4);
+  up = glm::vec3(0, 1, 0);
+  fov = -60.0f;
+  zfar  = 5.f;
+  znear =  0.25f;
 }
 
 void MyGLWidget::paintGL()
@@ -146,9 +170,7 @@ void MyGLWidget::carregaShaders()
 {
   LL2GLWidget::carregaShaders();
   colorLoc  = glGetUniformLocation (program->programId(), "newColor");
-  viewRotateLoc  = glGetUniformLocation (program->programId(), "viewRotate");
-
-  
+  // viewRotateLoc  = glGetUniformLocation (program->programId(), "viewRotate");
 }
 
 void MyGLWidget::TerraTransform()
@@ -223,18 +245,26 @@ void MyGLWidget::keyPressEvent(QKeyEvent *event)
   {
   case Qt::Key_Up:
   {
-    angMoveCarAzul-= 2.0f;
-    angCarAzul += 2.0f;
-
+    angMoveCarRojo -= 2.0f;
+    angCarRojo += 2.0f;
+    
     angMoveCarVerde -= 3.0f;
     angCarVerde += 3.0f;
 
-    angMoveCarRojo -= 4.0f;
-    angCarRojo += 4.0f;
+    angMoveCarAzul-= 4.0f;
+    angCarAzul += 4.0f;
     break;
   }
   case Qt::Key_C:
   {
+    camaraPrimeraPersona= !camaraPrimeraPersona;
+    if(!camaraPrimeraPersona){
+      iniCamera();
+    }else{
+      iniCamera2();
+    }
+    viewTransform();
+    projectTransform();
     break;
   }
   case Qt::Key_R:
@@ -264,7 +294,9 @@ void MyGLWidget::mouseReleaseEvent(QMouseEvent *event)
 void MyGLWidget::mouseMoveEvent(QMouseEvent *e)
 {
   makeCurrent();
-  if(DoingInteractive==ROTATE){
+  // if(DoingInteractive==ROTATE && !camaraPrimeraPersona){
+  if(DoingInteractive==ROTATE ){
+
     float angleY = (e->x() - xClick) * factorAngleY;
     float angleX = (e->y() - yClick) * factorAngleX;
 
@@ -272,21 +304,34 @@ void MyGLWidget::mouseMoveEvent(QMouseEvent *e)
     rotateObject(angleX, angleY);
   }
 
-
   update ();
 }
 
 void MyGLWidget::rotateObject(float angleX, float angleY)
 {
- 
   glm::mat4 View(1.0f);
 
 // Crear matrices de rotación para los ejes X e Y
-  glm::mat4 rotationX = glm::rotate(glm::mat4(1.0f), angleX, glm::vec3(1.0, 0.0, 0.0));
-  glm::mat4 rotationY = glm::rotate(glm::mat4(1.0f), angleY, glm::vec3(0.0, 1.0, 0.0));
+  // glm::mat4 rotationX = glm::rotate(glm::mat4(1.0f), 0, glm::vec3(0.0, 0.0, 0.0));
+  // glm::mat4 rotationY = glm::rotate(glm::mat4(1.0f), 0, glm::vec3(0.0, 0.0, 0.0));
 
   // mandar las rotaciones a el uniform
-  View = rotationX * rotationY;
-  glUniformMatrix4fv(viewRotateLoc, 1, GL_FALSE, &View[0][0]);
+  // View = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
+  // glUniformMatrix4fv(viewRotateLoc, 1, GL_FALSE, &View[0][0]);
 
+
+  float cameraX = radiEscena * sin(angleX) * cos(angleY);
+  float cameraY = radiEscena * sin(angleY);
+  float cameraZ = radiEscena * cos(angleX) * cos(angleY);
+
+  obs = glm::vec3(cameraX, cameraY, cameraZ);
+  vrp = glm::vec3(0.0f, 1.0f, 0.0f); // El origen
+  up = glm::vec3(0.0f, 1.0f, 0.0f);
+
+  // glm::mat4 View2 = glm::lookAt(obs, vrp, up);
+
+  // // Enviar la matriz de vista al shader
+  // glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &View2[0][0]);
+  viewTransform();
+  projectTransform();
 }
