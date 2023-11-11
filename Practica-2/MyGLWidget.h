@@ -33,7 +33,7 @@ class MyGLWidget : public LL2GLWidget {
   virtual void TerraTransform();
   virtual void PipeTransform();
   virtual void RoadTransform(glm::vec3 pos, float angle);
-  virtual void CarTransform(glm::vec3 pos, float angle, float angleMove, glm::vec3 color);
+  virtual void CarTransform(float radio, float angle, float angleMove, glm::vec3 color);
 
   GLuint colorLoc;
   GLuint viewRotateLoc;
