@@ -1,6 +1,7 @@
 #include "MyGLWidget.h"
 #include <iostream>
 #include <stdio.h>
+#include <QTimer>
 
 #define printOpenGLError() printOglError(__FILE__, __LINE__)
 #define CHECK() printOglError(__FILE__, __LINE__, __FUNCTION__)
@@ -62,7 +63,7 @@ void MyGLWidget::initializeGL()
   LL2GLWidget::iniEscena();
 
   LL2GLWidget::iniCamera();
-
+  
   if(!camaraPrimeraPersona){
       iniCamera();
     }else{
@@ -70,8 +71,10 @@ void MyGLWidget::initializeGL()
     }
   viewTransform();
   projectTransform();
-  rotateObject(0.0f, 0.0f);
-  
+  rotateCamara(anguloX, anguloY);
+
+  timer = new QTimer(this);  // Inicializa el timer
+  connect(timer, SIGNAL(timeout()), this, SLOT(animacion()));  // Conecta la señal timeout() a la ranura animacion()
 }
 
 void MyGLWidget::iniCamera()
@@ -84,7 +87,7 @@ void MyGLWidget::iniCamera()
   // zfar  = 50;
     fov = 45.0f;
     znear = 0.1f;
-    zfar = 2.0f * radiEscena;
+    zfar = 40.f;
 }
 void MyGLWidget::iniCamera2()
 {
@@ -245,14 +248,7 @@ void MyGLWidget::keyPressEvent(QKeyEvent *event)
   {
   case Qt::Key_Up:
   {
-    angMoveCarRojo -= 2.0f;
-    angCarRojo += 2.0f;
-    
-    angMoveCarVerde -= 3.0f;
-    angCarVerde += 3.0f;
-
-    angMoveCarAzul-= 4.0f;
-    angCarAzul += 4.0f;
+    movimiento();
     break;
   }
   case Qt::Key_C:
@@ -273,6 +269,12 @@ void MyGLWidget::keyPressEvent(QKeyEvent *event)
   }
   case Qt::Key_T:
   {
+    if (animacionCurso) {
+        timer->stop();
+    } else {
+        timer->start(16);
+    }
+    animacionCurso = !animacionCurso;
     break;
   }
   default:
@@ -297,28 +299,19 @@ void MyGLWidget::mouseMoveEvent(QMouseEvent *e)
   // if(DoingInteractive==ROTATE && !camaraPrimeraPersona){
   if(DoingInteractive==ROTATE ){
 
-    float angleY = (e->x() - xClick) * factorAngleY;
-    float angleX = (e->y() - yClick) * factorAngleX;
+    anguloX =anguloX+ (e->x() - xClick) * factorAngleY;
+    anguloY =anguloY+ (e->y() - yClick) * factorAngleX;
 
-    // Aplica la rotación a tu objeto
-    rotateObject(angleX, angleY);
+    // Aplica la rotación a la camara
+    rotateCamara(anguloX, anguloY);
   }
 
   update ();
 }
 
-void MyGLWidget::rotateObject(float angleX, float angleY)
+void MyGLWidget::rotateCamara(float angleX, float angleY)
 {
   glm::mat4 View(1.0f);
-
-// Crear matrices de rotación para los ejes X e Y
-  // glm::mat4 rotationX = glm::rotate(glm::mat4(1.0f), 0, glm::vec3(0.0, 0.0, 0.0));
-  // glm::mat4 rotationY = glm::rotate(glm::mat4(1.0f), 0, glm::vec3(0.0, 0.0, 0.0));
-
-  // mandar las rotaciones a el uniform
-  // View = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
-  // glUniformMatrix4fv(viewRotateLoc, 1, GL_FALSE, &View[0][0]);
-
 
   float cameraX = radiEscena * sin(angleX) * cos(angleY);
   float cameraY = radiEscena * sin(angleY);
@@ -328,10 +321,23 @@ void MyGLWidget::rotateObject(float angleX, float angleY)
   vrp = glm::vec3(0.0f, 1.0f, 0.0f); // El origen
   up = glm::vec3(0.0f, 1.0f, 0.0f);
 
-  // glm::mat4 View2 = glm::lookAt(obs, vrp, up);
-
-  // // Enviar la matriz de vista al shader
-  // glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &View2[0][0]);
   viewTransform();
   projectTransform();
+}
+
+void MyGLWidget::movimiento(){
+  angMoveCarRojo -= 2.0f;
+  angCarRojo += 2.0f;
+  
+  angMoveCarVerde -= 3.0f;
+  angCarVerde += 3.0f;
+
+  angMoveCarAzul-= 4.0f;
+  angCarAzul += 4.0f;
+}
+
+void MyGLWidget::animacion(){
+  makeCurrent();
+  movimiento();
+  update();
 }
