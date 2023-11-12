@@ -1,3 +1,4 @@
+// MyGLWidget.cpp
 #include "MyGLWidget.h"
 #include <iostream>
 #include <stdio.h>
@@ -62,16 +63,13 @@ void MyGLWidget::initializeGL()
   LL2GLWidget::creaBuffersTerra();
   LL2GLWidget::iniEscena();
 
-  LL2GLWidget::iniCamera();
+  //LL2GLWidget::iniCamera();
   
   if(!camaraPrimeraPersona){
       iniCamera();
     }else{
       iniCamera2();
     }
-  viewTransform();
-  projectTransform();
-  rotateCamara(anguloX, anguloY);
 
   timer = new QTimer(this);  // Inicializa el timer
   connect(timer, SIGNAL(timeout()), this, SLOT(animacion()));  // Conecta la señal timeout() a la ranura animacion()
@@ -79,24 +77,27 @@ void MyGLWidget::initializeGL()
 
 void MyGLWidget::iniCamera()
 {
-  obs = glm::vec3(0, 10, 50);
-  vrp = glm::vec3(0, 1, 0);
-  up = glm::vec3(0, 1, 0);
-  // fov=45.0f;
-  // znear =  1;
-  // zfar  = 50;
-    fov = 45.0f;
-    znear = 0.1f;
-    zfar = 40.f;
+  float dist = radiEscena * 2.0; // La mitad de la diagonal del terreno
+  obs = glm::vec3(0, dist, 0.1); // Eleva la cámara en el eje Y
+  vrp = glm::vec3(0, 0, 0); // Mira hacia el centro de la escena
+  up = glm::vec3(0, 0, -1); // Vector 'up' correcto
+  fov = glm::radians(45.0f); // Campo de visión para incluir toda la escena
+  znear = 0.1f;
+  zfar = 3 * dist;
+  viewTransform();
+  projectTransform();                  // Lejos del plano de recorte, suficientemente grande para ver toda la escena
+  //rotateCamara(anguloX, anguloY);
 }
 void MyGLWidget::iniCamera2()
 {
-  obs = glm::vec3(7.5, 0.5, 0.5);
-  vrp = glm::vec3(7.5, 0.5, 0.4);
-  up = glm::vec3(0, 1, 0);
-  fov = -60.0f;
-  zfar  = 5.f;
+  obs = posicionCamP;
+  vrp = vistaCamP;
+  up = up;
+  fov = glm::radians(60.0f);
   znear =  0.25f;
+  zfar  = 5.f;
+  viewTransform();
+  projectTransform();
 }
 
 void MyGLWidget::paintGL()
@@ -173,7 +174,6 @@ void MyGLWidget::carregaShaders()
 {
   LL2GLWidget::carregaShaders();
   colorLoc  = glGetUniformLocation (program->programId(), "newColor");
-  // viewRotateLoc  = glGetUniformLocation (program->programId(), "viewRotate");
 }
 
 void MyGLWidget::TerraTransform()
@@ -188,10 +188,11 @@ void MyGLWidget::TerraTransform()
 
 void MyGLWidget::RoadTransform(glm::vec3 pos, float angle)
 {
-  LL2GLWidget::RoadTransform(pos, angle);
+  // LL2GLWidget::RoadTransform(pos, angle);
+  calculaCapsaModel(models[ROAD], escalaModels[ROAD], 10.f, centreBaseModels[ROAD]);
   glm::mat4 TG(1.0f);
   TG = glm::translate(TG, pos);
-  TG = glm::scale(TG, glm::vec3(11.11, 1,11.11));
+  TG = glm::scale(TG, glm::vec3(escalaModels[ROAD]));
   TG = glm::rotate(TG, glm::radians(angle), glm::vec3(0,1,0));
   TG = glm::translate(TG, -centreBaseModels[ROAD]);
   glUniformMatrix4fv(transLoc, 1, GL_FALSE, &TG[0][0]);
@@ -200,9 +201,11 @@ void MyGLWidget::RoadTransform(glm::vec3 pos, float angle)
 }
 
 void MyGLWidget::PipeTransform (){
-  LL2GLWidget::PipeTransform ();
+  // LL2GLWidget::PipeTransform ();
+  calculaCapsaModel(models[PIPE], escalaModels[PIPE], 3.f, centreBaseModels[PIPE]);
+
   glm::mat4 TG(1.0f);
-  TG = glm::scale(TG, glm::vec3(escalaModels[PIPE]*3, escalaModels[PIPE]*3, escalaModels[PIPE]*3));
+  TG = glm::scale(TG, glm::vec3(escalaModels[PIPE]));
   TG = glm::translate(TG, glm::vec3(0,0,0));
   TG = glm::translate(TG, -centreBaseModels[PIPE]);
   glUniformMatrix4fv(transLoc, 1, GL_FALSE, &TG[0][0]);
@@ -211,7 +214,8 @@ void MyGLWidget::PipeTransform (){
 }
 
 void MyGLWidget::CarTransform (float radio, float angleAuto, float angleMove, glm::vec3 color){
-  LL2GLWidget::CarTransform (0.0, 0.0);
+  // LL2GLWidget::CarTransform (0.0, 0.0);
+  calculaCapsaModel(models[CAR], escalaModels[CAR], 2.f, centreBaseModels[CAR]);
 
   glUniform3fv(colorLoc, 1, &color[0]);
   // Calcula la dirección en la que se moverá el auto
@@ -223,6 +227,7 @@ void MyGLWidget::CarTransform (float radio, float angleAuto, float angleMove, gl
 
   // Transformaciones
   glm::mat4 TG(1.0f);
+  TG = glm::scale(TG, glm::vec3(escalaModels[CAR]));
   TG = glm::translate(TG, glm::vec3(newPosition));
   TG = glm::rotate(TG, glm::radians(angleAuto), glm::vec3(0,1,0));
   TG = glm::translate(TG, -centreBaseModels[CAR]);
@@ -233,12 +238,28 @@ void MyGLWidget::CarTransform (float radio, float angleAuto, float angleMove, gl
 
 void MyGLWidget::viewTransform()
 {
-  LL2GLWidget::viewTransform();
+  float d = radiEscena*4; // Este valor depende del tamaño de tu escena
+  glm::vec3 VRP(0.0f, 0.0f, 0.0f); // El centro de la escena
+
+  // Inicializamos la matriz de vista (VM) con la identidad
+  glm::mat4 VM = glm::mat4(1.0f);
+
+  // Aplicamos las transformaciones en el orden correcto
+  VM = glm::translate(VM, glm::vec3(0.0f, 0.0f, -d)); // Nos alejamos del centro
+  VM = glm::rotate(VM, -psi, glm::vec3(0, 1, 0)); // Rotación horizontal
+  VM = glm::rotate(VM, theta, glm::vec3(1, 0, 0)); // Rotación vertical
+  VM = glm::rotate(VM, -psi, glm::vec3(0, 1, 0)); // Podría ser otra rotación si es necesario
+  VM = glm::translate(VM, -VRP); // Centramos la cámara en el VRP
+
+  // Enviamos la matriz al shader
+  glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &VM[0][0]);
 }
 
 void MyGLWidget::projectTransform()
 {
-  LL2GLWidget::projectTransform();
+  glm::mat4 Proj(1.0f);
+  Proj = glm::perspective (fov, ra, znear, zfar);
+  glUniformMatrix4fv (projLoc, 1, GL_FALSE, &Proj[0][0]);
 }
 
 void MyGLWidget::keyPressEvent(QKeyEvent *event)
@@ -249,6 +270,14 @@ void MyGLWidget::keyPressEvent(QKeyEvent *event)
   case Qt::Key_Up:
   {
     movimiento();
+    
+    if(camaraPrimeraPersona){
+      obs = posicionCamP;
+      vrp = vistaCamP;
+      up = up;
+      viewTransform();
+      projectTransform();
+    }
     break;
   }
   case Qt::Key_C:
@@ -258,13 +287,28 @@ void MyGLWidget::keyPressEvent(QKeyEvent *event)
       iniCamera();
     }else{
       iniCamera2();
-    }
+      }
     viewTransform();
     projectTransform();
     break;
   }
   case Qt::Key_R:
   {
+    psi = 0.f;
+    theta = 0.f;
+
+    angMoveCarRojo = 0.f;
+    angCarRojo = 0.f;
+    
+    angMoveCarVerde = 0.f;
+    angCarVerde = 0.f;
+
+    angMoveCarAzul = 0.f;
+    angCarAzul = 0.f;
+
+    viewTransform();
+    projectTransform();
+
     break;
   }
   case Qt::Key_T:
@@ -296,16 +340,17 @@ void MyGLWidget::mouseReleaseEvent(QMouseEvent *event)
 void MyGLWidget::mouseMoveEvent(QMouseEvent *e)
 {
   makeCurrent();
-  // if(DoingInteractive==ROTATE && !camaraPrimeraPersona){
-  if(DoingInteractive==ROTATE ){
+  if(DoingInteractive==ROTATE && !camaraPrimeraPersona){
 
-    anguloX =anguloX+ (e->x() - xClick) * factorAngleY;
-    anguloY =anguloY+ (e->y() - yClick) * factorAngleX;
+    psi -= (e->x() - xClick) * factorAngleY;
+    theta -= (e->y() - yClick) * factorAngleX;
 
-    // Aplica la rotación a la camara
-    rotateCamara(anguloX, anguloY);
+    // Llamamos a viewTransform para actualizar la matriz de vista
+    viewTransform();
   }
-
+  // Actualizamos la última posición conocida del ratón
+  xClick = e->x();
+  yClick = e->y();
   update ();
 }
 
@@ -334,6 +379,18 @@ void MyGLWidget::movimiento(){
 
   angMoveCarAzul-= 4.0f;
   angCarAzul += 4.0f;
+
+  float radianAngle = glm::radians(angMoveCarVerde);
+  glm::vec3 direction = glm::vec3(std::cos(radianAngle), centreBaseModels[CAR].y + 0.5 , std::sin(radianAngle));
+
+  // Calcula la nueva posición del auto
+  posicionCamP = centreEscena + direction*7.5f;
+  
+  float radianAngle2 = glm::radians(angMoveCarVerde-3.0f);
+  glm::vec3 direction2 = glm::vec3(std::cos(radianAngle2), 0.5, std::sin(radianAngle2));
+
+  // Calcula hacia donde mira el auto auto
+  vistaCamP = centreEscena + direction2*7.5f;
 }
 
 void MyGLWidget::animacion(){

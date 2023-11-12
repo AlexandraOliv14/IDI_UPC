@@ -57,10 +57,13 @@ class MyGLWidget : public LL2GLWidget {
     virtual void movimiento();
 
     //ANGULOS DE MOVIMIENTO
-    float anguloX = 0.f, anguloY = 0.f;
+    float psi = 0.f, theta = 0.f;
 
-    
-
+    //POSICIONES MOVIMIENTOS PRIMERA PERSONA
+    glm::vec3 direction = glm::vec3(std::cos(glm::radians(-3.f)), centreBaseModels[CAR].y + 0.5 , std::sin(glm::radians(-3.f)));
+    glm::vec3 posicionCamP = centreEscena + direction*7.5f;
+    glm::vec3 direction2 = glm::vec3(std::cos(glm::radians(-6.f)), 0.5 , std::sin(glm::radians(-6.f)));
+    glm::vec3 vistaCamP = centreEscena + direction2*7.5f;
   private:
   QTimer *timer;
   int printOglError(const char file[], int line, const char func[]);
