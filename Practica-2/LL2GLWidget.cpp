@@ -1,5 +1,4 @@
 #include "LL2GLWidget.h"
-
 #include <iostream>
 
 LL2GLWidget::LL2GLWidget (QWidget* parent) : QOpenGLWidget(parent), program(NULL)
@@ -239,7 +238,6 @@ void LL2GLWidget::calculaCapsaModel (Model &p, float &escala, float profunditatD
     if (p.vertices()[i+2] > maxz)
       maxz = p.vertices()[i+2];
   }
-
   escala = profunditatDesitjada/(maxz-minz);
   centreBase[0] = (minx+maxx)/2.0; centreBase[1] = miny; centreBase[2] = (minz+maxz)/2.0;
 }

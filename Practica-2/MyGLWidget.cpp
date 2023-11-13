@@ -64,11 +64,17 @@ void MyGLWidget::initializeGL()
   LL2GLWidget::iniEscena();
 
   //LL2GLWidget::iniCamera();
-  
+  distanciaCamara = radiEscena*4;
+  iniCamera();
+
   if(!camaraPrimeraPersona){
       iniCamera();
+      viewTransform();
+      projectTransform();
     }else{
-      iniCamera2();
+      FirstPersonCameraTransform(7.5f,angCarVerde);
+      LL2GLWidget::viewTransform();
+      projectTransform();
     }
 
   timer = new QTimer(this);  // Inicializa el timer
@@ -90,12 +96,15 @@ void MyGLWidget::iniCamera()
 }
 void MyGLWidget::iniCamera2()
 {
-  obs = posicionCamP;
-  vrp = vistaCamP;
-  up = up;
-  fov = glm::radians(60.0f);
-  znear =  0.25f;
-  zfar  = 5.f;
+  // obs = posicionCamP;
+  // vrp = vistaCamP;
+  // up = up;
+  // fov = glm::radians(60.0f);
+  // znear =  0.25f;
+  // zfar  = 5.f;
+  psi = angMoveCarVerde;
+  theta =angCarVerde;
+
   viewTransform();
   projectTransform();
 }
@@ -188,24 +197,31 @@ void MyGLWidget::TerraTransform()
 
 void MyGLWidget::RoadTransform(glm::vec3 pos, float angle)
 {
-  // LL2GLWidget::RoadTransform(pos, angle);
-  calculaCapsaModel(models[ROAD], escalaModels[ROAD], 10.f, centreBaseModels[ROAD]);
+  LL2GLWidget::RoadTransform(pos, angle);
+
+  //calculaCapsaModel(models[ROAD], escalaModels[ROAD], 10.0f, centreBaseModels[ROAD]);
+  float tamanoOriginalCarretera = 2.f/escalaModels[ROAD]/* tamaño original */;
+  float escalaDeseada = 10.0f / tamanoOriginalCarretera;
+
   glm::mat4 TG(1.0f);
-  TG = glm::translate(TG, pos);
-  TG = glm::scale(TG, glm::vec3(escalaModels[ROAD]));
-  TG = glm::rotate(TG, glm::radians(angle), glm::vec3(0,1,0));
-  TG = glm::translate(TG, -centreBaseModels[ROAD]);
+  TG = glm::translate(TG, pos); // Posicionamos la carretera
+  TG = glm::scale(TG, glm::vec3(escalaDeseada, 1.0f, escalaDeseada)); // Escalamos el segmento de carretera a 10x10 unidades
+  TG = glm::rotate(TG, glm::radians(angle), glm::vec3(0, 1, 0)); // Aplicamos la rotación indicada
+  TG = glm::translate(TG, -centreBaseModels[ROAD]); // Centramos la carretera en su base
+
   glUniformMatrix4fv(transLoc, 1, GL_FALSE, &TG[0][0]);
-  glm::vec3 color = glm::vec3(1, 1, 1);
+  glm::vec3 color = glm::vec3(1, 1, 1); // Suponiendo que queremos que la carretera sea de color blanco
   glUniform3fv(colorLoc, 1, &color[0]);
 }
 
 void MyGLWidget::PipeTransform (){
-  // LL2GLWidget::PipeTransform ();
-  calculaCapsaModel(models[PIPE], escalaModels[PIPE], 3.f, centreBaseModels[PIPE]);
+  LL2GLWidget::PipeTransform ();
+  //calculaCapsaModel(models[PIPE], escalaModels[PIPE], 3.f, centreBaseModels[PIPE]);
+  float tamanoOriginalCarretera = 1.f/escalaModels[PIPE]/* tamaño original */;
+  float escalaDeseada = 3.0f / tamanoOriginalCarretera;
 
   glm::mat4 TG(1.0f);
-  TG = glm::scale(TG, glm::vec3(escalaModels[PIPE]));
+  TG = glm::scale(TG, glm::vec3(escalaDeseada));
   TG = glm::translate(TG, glm::vec3(0,0,0));
   TG = glm::translate(TG, -centreBaseModels[PIPE]);
   glUniformMatrix4fv(transLoc, 1, GL_FALSE, &TG[0][0]);
@@ -214,8 +230,11 @@ void MyGLWidget::PipeTransform (){
 }
 
 void MyGLWidget::CarTransform (float radio, float angleAuto, float angleMove, glm::vec3 color){
-  // LL2GLWidget::CarTransform (0.0, 0.0);
-  calculaCapsaModel(models[CAR], escalaModels[CAR], 2.f, centreBaseModels[CAR]);
+  LL2GLWidget::CarTransform (0.0, 0.0);
+  float tamanoOriginalCarretera = 2.f/escalaModels[CAR]/* tamaño original */;
+  float escalaDeseada = 2.0f / tamanoOriginalCarretera;
+
+  //calculaCapsaModel(models[CAR], escalaModels[CAR], 2.f, centreBaseModels[CAR]);
 
   glUniform3fv(colorLoc, 1, &color[0]);
   // Calcula la dirección en la que se moverá el auto
@@ -227,10 +246,11 @@ void MyGLWidget::CarTransform (float radio, float angleAuto, float angleMove, gl
 
   // Transformaciones
   glm::mat4 TG(1.0f);
-  TG = glm::scale(TG, glm::vec3(escalaModels[CAR]));
+  TG = glm::scale(TG, glm::vec3(escalaDeseada,1,escalaDeseada));
   TG = glm::translate(TG, glm::vec3(newPosition));
   TG = glm::rotate(TG, glm::radians(angleAuto), glm::vec3(0,1,0));
   TG = glm::translate(TG, -centreBaseModels[CAR]);
+
   glUniformMatrix4fv(transLoc, 1, GL_FALSE, &TG[0][0]);
 
 }
@@ -238,14 +258,14 @@ void MyGLWidget::CarTransform (float radio, float angleAuto, float angleMove, gl
 
 void MyGLWidget::viewTransform()
 {
-  float d = radiEscena*4; // Este valor depende del tamaño de tu escena
+   // Este valor depende del tamaño de tu escena distanciaCamara
   glm::vec3 VRP(0.0f, 0.0f, 0.0f); // El centro de la escena
 
   // Inicializamos la matriz de vista (VM) con la identidad
   glm::mat4 VM = glm::mat4(1.0f);
 
   // Aplicamos las transformaciones en el orden correcto
-  VM = glm::translate(VM, glm::vec3(0.0f, 0.0f, -d)); // Nos alejamos del centro
+  VM = glm::translate(VM, glm::vec3(0.0f, 0.0f, -distanciaCamara)); // Nos alejamos del centro
   VM = glm::rotate(VM, -psi, glm::vec3(0, 1, 0)); // Rotación horizontal
   VM = glm::rotate(VM, theta, glm::vec3(1, 0, 0)); // Rotación vertical
   VM = glm::rotate(VM, -psi, glm::vec3(0, 1, 0)); // Podría ser otra rotación si es necesario
@@ -253,6 +273,14 @@ void MyGLWidget::viewTransform()
 
   // Enviamos la matriz al shader
   glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &VM[0][0]);
+}
+
+void MyGLWidget::FirstPersonCameraTransform(float radio, float angleAuto) {
+  // Este valor depende del tamaño de tu escena distanciaCamara
+  glm::mat4 VM = glm::lookAt(posicionCamP, vistaCamP, glm::vec3(0, 1, 0));
+  glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &VM[0][0]);
+
+  fov= glm::radians(60.0f);
 }
 
 void MyGLWidget::projectTransform()
@@ -272,10 +300,11 @@ void MyGLWidget::keyPressEvent(QKeyEvent *event)
     movimiento();
     
     if(camaraPrimeraPersona){
-      obs = posicionCamP;
-      vrp = vistaCamP;
-      up = up;
-      viewTransform();
+      // obs = posicionCamP;
+      // vrp = vistaCamP;
+      // up = up;
+      FirstPersonCameraTransform(7.5f,angCarVerde);
+      //viewTransform();
       projectTransform();
     }
     break;
@@ -284,19 +313,25 @@ void MyGLWidget::keyPressEvent(QKeyEvent *event)
   {
     camaraPrimeraPersona= !camaraPrimeraPersona;
     if(!camaraPrimeraPersona){
+      psi = 0.f;
+      theta = glm::radians(45.0f);
+      distanciaCamara = radiEscena*4;
       iniCamera();
+      viewTransform();
     }else{
-      iniCamera2();
+      psi = angMoveCarVerde - 90.f;
+      theta =glm::radians(60.0f);;
+      distanciaCamara= 7.5f;
+      FirstPersonCameraTransform(7.5f,angCarVerde);
       }
-    viewTransform();
     projectTransform();
     break;
   }
   case Qt::Key_R:
   {
     psi = 0.f;
-    theta = 0.f;
-
+    theta = glm::radians(45.0f);
+    distanciaCamara = radiEscena*4;
     angMoveCarRojo = 0.f;
     angCarRojo = 0.f;
     
@@ -352,22 +387,6 @@ void MyGLWidget::mouseMoveEvent(QMouseEvent *e)
   xClick = e->x();
   yClick = e->y();
   update ();
-}
-
-void MyGLWidget::rotateCamara(float angleX, float angleY)
-{
-  glm::mat4 View(1.0f);
-
-  float cameraX = radiEscena * sin(angleX) * cos(angleY);
-  float cameraY = radiEscena * sin(angleY);
-  float cameraZ = radiEscena * cos(angleX) * cos(angleY);
-
-  obs = glm::vec3(cameraX, cameraY, cameraZ);
-  vrp = glm::vec3(0.0f, 1.0f, 0.0f); // El origen
-  up = glm::vec3(0.0f, 1.0f, 0.0f);
-
-  viewTransform();
-  projectTransform();
 }
 
 void MyGLWidget::movimiento(){
