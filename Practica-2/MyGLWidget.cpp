@@ -58,14 +58,14 @@ void MyGLWidget::initializeGL()
   glEnable(GL_DEPTH_TEST);
 
   glClearColor(0.5, 0.7, 1.0, 1.0); // defineix color de fons (d'esborrat)
-  carregaShaders();
-  LL2GLWidget::creaBuffersModels();
-  LL2GLWidget::creaBuffersTerra();
-  LL2GLWidget::iniEscena();
+  carregaShaders(); //cargar shaders
+  LL2GLWidget::creaBuffersModels(); //cargar modelos
+  LL2GLWidget::creaBuffersTerra(); //cargar tierra
+  LL2GLWidget::iniEscena(); //inicializar escena
 
   //LL2GLWidget::iniCamera();
-  distanciaCamara = radiEscena*4;
-  iniCamera();
+  distanciaCamara = radiEscena*4; // Inicializamos la distancia de la cámara
+  iniCamera(); 
 
   if(!camaraPrimeraPersona){
       iniCamera();
@@ -197,15 +197,15 @@ void MyGLWidget::TerraTransform()
 
 void MyGLWidget::RoadTransform(glm::vec3 pos, float angle)
 {
-  LL2GLWidget::RoadTransform(pos, angle);
+  //LL2GLWidget::RoadTransform(pos, angle);
 
   //calculaCapsaModel(models[ROAD], escalaModels[ROAD], 10.0f, centreBaseModels[ROAD]);
-  float tamanoOriginalCarretera = 2.f/escalaModels[ROAD]/* tamaño original */;
-  float escalaDeseada = 10.0f / tamanoOriginalCarretera;
+  // float tamanoOriginalCarretera = 2.f/escalaModels[ROAD]/* tamaño original */;
+  // float escalaDeseada = 10.0f / tamanoOriginalCarretera;
 
   glm::mat4 TG(1.0f);
   TG = glm::translate(TG, pos); // Posicionamos la carretera
-  TG = glm::scale(TG, glm::vec3(escalaDeseada, 1.0f, escalaDeseada)); // Escalamos el segmento de carretera a 10x10 unidades
+  TG = glm::scale(TG, glm::vec3(escalaModels[ROAD]*5, 1.0f, escalaModels[ROAD]*5)); // Escalamos el segmento de carretera a 10x10 unidades
   TG = glm::rotate(TG, glm::radians(angle), glm::vec3(0, 1, 0)); // Aplicamos la rotación indicada
   TG = glm::translate(TG, -centreBaseModels[ROAD]); // Centramos la carretera en su base
 
@@ -215,13 +215,13 @@ void MyGLWidget::RoadTransform(glm::vec3 pos, float angle)
 }
 
 void MyGLWidget::PipeTransform (){
-  LL2GLWidget::PipeTransform ();
+  //LL2GLWidget::PipeTransform ();
   //calculaCapsaModel(models[PIPE], escalaModels[PIPE], 3.f, centreBaseModels[PIPE]);
-  float tamanoOriginalCarretera = 1.f/escalaModels[PIPE]/* tamaño original */;
-  float escalaDeseada = 3.0f / tamanoOriginalCarretera;
+  // float tamanoOriginalCarretera = 1.f/escalaModels[PIPE]/* tamaño original */;
+  // float escalaDeseada = 3.0f / tamanoOriginalCarretera;
 
   glm::mat4 TG(1.0f);
-  TG = glm::scale(TG, glm::vec3(escalaDeseada));
+  TG = glm::scale(TG, glm::vec3(escalaModels[PIPE]*3));
   TG = glm::translate(TG, glm::vec3(0,0,0));
   TG = glm::translate(TG, -centreBaseModels[PIPE]);
   glUniformMatrix4fv(transLoc, 1, GL_FALSE, &TG[0][0]);
@@ -231,8 +231,8 @@ void MyGLWidget::PipeTransform (){
 
 void MyGLWidget::CarTransform (float radio, float angleAuto, float angleMove, glm::vec3 color){
   LL2GLWidget::CarTransform (0.0, 0.0);
-  float tamanoOriginalCarretera = 2.f/escalaModels[CAR]/* tamaño original */;
-  float escalaDeseada = 2.0f / tamanoOriginalCarretera;
+  // float tamanoOriginalCarretera = 2.f/escalaModels[CAR]/* tamaño original */;
+  // float escalaDeseada = 2.0f / tamanoOriginalCarretera;
 
   //calculaCapsaModel(models[CAR], escalaModels[CAR], 2.f, centreBaseModels[CAR]);
 
@@ -246,7 +246,7 @@ void MyGLWidget::CarTransform (float radio, float angleAuto, float angleMove, gl
 
   // Transformaciones
   glm::mat4 TG(1.0f);
-  TG = glm::scale(TG, glm::vec3(escalaDeseada,1,escalaDeseada));
+  //TG = glm::scale(TG, glm::vec3(escalaModels[CAR],1,escalaModels[CAR]));
   TG = glm::translate(TG, glm::vec3(newPosition));
   TG = glm::rotate(TG, glm::radians(angleAuto), glm::vec3(0,1,0));
   TG = glm::translate(TG, -centreBaseModels[CAR]);
@@ -300,11 +300,7 @@ void MyGLWidget::keyPressEvent(QKeyEvent *event)
     movimiento();
     
     if(camaraPrimeraPersona){
-      // obs = posicionCamP;
-      // vrp = vistaCamP;
-      // up = up;
       FirstPersonCameraTransform(7.5f,angCarVerde);
-      //viewTransform();
       projectTransform();
     }
     break;
