@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Simon</class>
+ <widget class="QWidget" name="Simon">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>542</width>
+    <height>372</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_5">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton">
+       <property name="text">
+        <string>&amp;Partida Nueva</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Puntaje</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLCDNumber" name="puntaje"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_6">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_5">
+     <item>
+      <spacer name="verticalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="WigetSimonDice" name="label_2">
+         <property name="styleSheet">
+          <string notr="true">background: grey</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_4">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <widget class="WigetSimonDiceButton" name="wigetSimonDiceButton">
+             <property name="styleSheet">
+              <string notr="true">background:'red';</string>
+             </property>
+             <property name="text">
+              <string>&amp;1</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="WigetSimonDiceButton" name="pushButton_11">
+             <property name="styleSheet">
+              <string notr="true">background:'green'</string>
+             </property>
+             <property name="text">
+              <string>&amp;2</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <widget class="WigetSimonDiceButton" name="pushButton_9">
+             <property name="styleSheet">
+              <string notr="true">background:'blue'</string>
+             </property>
+             <property name="text">
+              <string>&amp;3</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="WigetSimonDiceButton" name="pushButton_10">
+             <property name="styleSheet">
+              <string notr="true">background:'yellow';</string>
+             </property>
+             <property name="text">
+              <string>&amp;4</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_5">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <spacer name="verticalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <spacer name="verticalSpacer_5">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QPushButton" name="pushButton_2">
+         <property name="text">
+          <string>&amp;Restear</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_4">
+         <property name="text">
+          <string>&amp;Salir</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>WigetSimonDice</class>
+   <extends>QLabel</extends>
+   <header>WigetSimonDice.h</header>
+   <slots>
+    <signal>puntaje(int)</signal>
+    <signal>fallo(bool)</signal>
+    <signal>mensaje(QString)</signal>
+    <signal>blockButton(bool)</signal>
+    <slot>secuenciaColor()</slot>
+    <slot>changeBackground(QColor)</slot>
+    <slot>machSecuencia(int)</slot>
+    <slot>reset()</slot>
+   </slots>
+  </customwidget>
+  <customwidget>
+   <class>WigetSimonDiceButton</class>
+   <extends>QPushButton</extends>
+   <header>WigetSimonDiceButton.h</header>
+   <slots>
+    <signal>numeroMach(int)</signal>
+    <slot>textoComoEntero()</slot>
+   </slots>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>pushButton_4</sender>
+   <signal>pressed()</signal>
+   <receiver>Simon</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>493</x>
+     <y>347</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>257</x>
+     <y>347</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>pressed()</signal>
+   <receiver>label_2</receiver>
+   <slot>secuenciaColor()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>186</x>
+     <y>43</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>279</x>
+     <y>132</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>wigetSimonDiceButton</sender>
+   <signal>numeroMach(int)</signal>
+   <receiver>label_2</receiver>
+   <slot>machSecuencia(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>247</x>
+     <y>189</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>279</x>
+     <y>132</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_11</sender>
+   <signal>numeroMach(int)</signal>
+   <receiver>label_2</receiver>
+   <slot>machSecuencia(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>337</x>
+     <y>193</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>279</x>
+     <y>132</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_9</sender>
+   <signal>numeroMach(int)</signal>
+   <receiver>label_2</receiver>
+   <slot>machSecuencia(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>231</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>279</x>
+     <y>132</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_10</sender>
+   <signal>numeroMach(int)</signal>
+   <receiver>label_2</receiver>
+   <slot>machSecuencia(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>338</x>
+     <y>231</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>276</x>
+     <y>132</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>pressed()</signal>
+   <receiver>label_2</receiver>
+   <slot>reset()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>495</x>
+     <y>309</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>277</x>
+     <y>132</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>label_2</sender>
+   <signal>puntaje(int)</signal>
+   <receiver>puntaje</receiver>
+   <slot>display(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>279</x>
+     <y>132</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>392</x>
+     <y>41</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>label_2</sender>
+   <signal>mensaje(QString)</signal>
+   <receiver>label_3</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>195</x>
+     <y>133</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>79</x>
+     <y>73</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>label_2</sender>
+   <signal>blockButton(bool)</signal>
+   <receiver>pushButton</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>193</x>
+     <y>137</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>161</x>
+     <y>33</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
