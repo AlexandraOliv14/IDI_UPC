@@ -89,34 +89,34 @@ void WigetSimonDice::generarSecMuestraa(){              //Genera secuencia a mos
 }
 
 void WigetSimonDice::machSecuencia(int colorIndex){     //Ve el mach de los botones con la secuencia
-    if(jugando){                                                                   //Verifica que no haya perdido
-        if(secuencia.size()==0){                                                //Si no hay secuencia   
-            emit mensaje("Bienvenido, inicie partida para comenzar");           //Envia mendaje de inicio de juego
+    if(jugando){                                                                        //Verifica que no haya perdido
+        if(secuencia.size()==0){                                                        //Si no hay secuencia   
+            emit mensaje("Bienvenido, inicie partida para comenzar");                   //Envia mendaje de inicio de juego
         }
-        else if(secuencia[indexSec] == colors[colorIndex-1]){                   //Si hay secuencia, verifica el color del boton con la secuencia 
+        else if(secuencia[indexSec] == colors[colorIndex-1]){                           //Si hay secuencia, verifica el color del boton con la secuencia 
                 
-                punt+=1;                                                        //Incrementa el puntaje
-                indexSec+=1;                                                    //Incrementa el index de la secuencia
+                punt+=1;                                                                //Incrementa el puntaje
+                indexSec+=1;                                                            //Incrementa el index de la secuencia
                 
-                emit puntaje(punt);                                             //Envia el puntaje obtenido
+                emit puntaje(punt);                                                     //Envia el puntaje obtenido
                 if(secuencia.size()==indexSec){
                     if(secuencia.size()==largoSec){
-                        jugando=false;                                             //Establece la perdida del juego
-                        emit mensaje("Has ganado");                             //Envia mensaje de ganador
-                        emit blockButton(false);                                //Desbloquea boton de inicio de partida
+                        jugando=false;                                                  //Establece la perdida del juego
+                        emit mensaje("Has ganado");                                     //Envia mensaje de ganador
+                        emit blockButton(false);                                        //Desbloquea boton de inicio de partida
                     }else{
-                        indexSec=0;                                                 //Reinicia el index de la secuencia
+                        indexSec=0;                                                     //Reinicia el index de la secuencia
                         startSecuencia(); 
-                    }                                                           //Comienza una nuva secuencia (agrega un color más)
+                    }                                                                   //Comienza una nuva secuencia (agrega un color más)
                 }
             }else{
-                jugando=false;                                                     //Establece la perdida del juego
-                emit mensaje("Has perdido");                                    //Envia mensaje de perdida
-                emit blockButton(false);                                        //Desbloquea boton de inicio de partida
+                jugando=false;                                                          //Establece la perdida del juego
+                emit mensaje("Has perdido");                                            //Envia mensaje de perdida
+                emit blockButton(false);                                                //Desbloquea boton de inicio de partida
             }
     }else{
-        emit mensaje("Juego terminado, juega una nueva partida para continuar");    //Envia mensaje de perdida y reinicio de juego
-        emit blockButton(false);                                                //Desbloquea boton de inicio de partida
+        emit mensaje("Juego terminado, juega una nueva partida para continuar");        //Envia mensaje de perdida y reinicio de juego
+        emit blockButton(false);                                                        //Desbloquea boton de inicio de partida
     }
     
 }
@@ -128,5 +128,11 @@ void WigetSimonDice::reset(){                           //Resetea el juego
 
     resetVar();                                                                                 //Limpia varibales generales
     emit blockButton(false);                                                                    //Desbloquea boton de inicio de partida
-    emit mensaje("Bienvenido, inicie partida para comenzar");                                   //Envia mensaje de inicio de juego
+    emit mensaje("Bienvenido, inicie partida para comenzar");
+    largoSec=10;
+    emit largoSecuencia(largoSec);                                   //Envia mensaje de inicio de juego
+}
+
+void WigetSimonDice::changeLargoSecuencia(int largo){   //Cambia el largo de la secuencia
+    largoSec=largo;                                     //Resetea el juego
 }

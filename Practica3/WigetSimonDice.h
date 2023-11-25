@@ -25,7 +25,7 @@ public:
 
     int currentColorIndex;          //Indice de color actual a mostrar
     int indexSec=0;                 //Indice de secuencia actual
-    int largoSec=2;                 //Largo de secuencia
+    int largoSec=10;                 //Largo de secuencia
     int punt = 0;                   //Puntaje
     bool jugando = true;            //Verifica fin de juego
     int indexCreate= 0;             //Indice de creacion de secuencia
@@ -36,10 +36,12 @@ private slots:
     void secuenciaColor();
     void machSecuencia(int);
     void reset();
+    void changeLargoSecuencia(int);
 
 signals: 
     void puntaje(int);
     void mensaje(QString);
     void blockButton(bool);
     void blockButtonColor(bool);
+    void largoSecuencia(int);
 };

@@ -6,14 +6,58 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>542</width>
-    <height>372</height>
+    <width>556</width>
+    <height>438</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Simon</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_7">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Largo maximo de la secuencia:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox">
+       <property name="value">
+        <number>10</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <spacer name="verticalSpacer_7">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>14</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
@@ -332,10 +376,12 @@
     <signal>mensaje(QString)</signal>
     <signal>blockButton(bool)</signal>
     <signal>blockButtonColor(bool)</signal>
+    <signal>largoSecuencia(int)</signal>
     <slot>secuenciaColor()</slot>
     <slot>changeBackground(QColor)</slot>
     <slot>machSecuencia(int)</slot>
     <slot>reset()</slot>
+    <slot>changeLargoSecuencia(int)</slot>
    </slots>
   </customwidget>
   <customwidget>
@@ -357,8 +403,8 @@
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>493</x>
-     <y>347</y>
+     <x>507</x>
+     <y>413</y>
     </hint>
     <hint type="destinationlabel">
      <x>257</x>
@@ -373,12 +419,12 @@
    <slot>secuenciaColor()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>166</x>
-     <y>36</y>
+     <x>116</x>
+     <y>98</y>
     </hint>
     <hint type="destinationlabel">
-     <x>279</x>
-     <y>135</y>
+     <x>287</x>
+     <y>195</y>
     </hint>
    </hints>
   </connection>
@@ -389,12 +435,12 @@
    <slot>machSecuencia(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>247</x>
-     <y>189</y>
+     <x>254</x>
+     <y>253</y>
     </hint>
     <hint type="destinationlabel">
-     <x>279</x>
-     <y>135</y>
+     <x>287</x>
+     <y>195</y>
     </hint>
    </hints>
   </connection>
@@ -405,12 +451,12 @@
    <slot>machSecuencia(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>337</x>
-     <y>193</y>
+     <x>344</x>
+     <y>257</y>
     </hint>
     <hint type="destinationlabel">
-     <x>279</x>
-     <y>135</y>
+     <x>287</x>
+     <y>195</y>
     </hint>
    </hints>
   </connection>
@@ -421,12 +467,12 @@
    <slot>machSecuencia(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>231</y>
+     <x>255</x>
+     <y>295</y>
     </hint>
     <hint type="destinationlabel">
-     <x>279</x>
-     <y>135</y>
+     <x>287</x>
+     <y>195</y>
     </hint>
    </hints>
   </connection>
@@ -437,12 +483,12 @@
    <slot>machSecuencia(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>338</x>
-     <y>231</y>
+     <x>345</x>
+     <y>295</y>
     </hint>
     <hint type="destinationlabel">
-     <x>276</x>
-     <y>135</y>
+     <x>284</x>
+     <y>195</y>
     </hint>
    </hints>
   </connection>
@@ -453,12 +499,12 @@
    <slot>reset()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>495</x>
-     <y>309</y>
+     <x>509</x>
+     <y>375</y>
     </hint>
     <hint type="destinationlabel">
-     <x>277</x>
-     <y>135</y>
+     <x>285</x>
+     <y>195</y>
     </hint>
    </hints>
   </connection>
@@ -469,12 +515,12 @@
    <slot>display(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>279</x>
-     <y>135</y>
+     <x>287</x>
+     <y>195</y>
     </hint>
     <hint type="destinationlabel">
-     <x>413</x>
-     <y>17</y>
+     <x>423</x>
+     <y>79</y>
     </hint>
    </hints>
   </connection>
@@ -485,12 +531,12 @@
    <slot>setText(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>195</x>
-     <y>136</y>
+     <x>203</x>
+     <y>196</y>
     </hint>
     <hint type="destinationlabel">
-     <x>207</x>
-     <y>78</y>
+     <x>214</x>
+     <y>142</y>
     </hint>
    </hints>
   </connection>
@@ -501,12 +547,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>193</x>
-     <y>140</y>
+     <x>201</x>
+     <y>200</y>
     </hint>
     <hint type="destinationlabel">
      <x>161</x>
-     <y>33</y>
+     <y>95</y>
     </hint>
    </hints>
   </connection>
@@ -517,12 +563,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>351</x>
-     <y>140</y>
+     <x>359</x>
+     <y>200</y>
     </hint>
     <hint type="destinationlabel">
-     <x>253</x>
-     <y>201</y>
+     <x>261</x>
+     <y>256</y>
     </hint>
    </hints>
   </connection>
@@ -533,12 +579,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>323</x>
-     <y>140</y>
+     <x>331</x>
+     <y>200</y>
     </hint>
     <hint type="destinationlabel">
-     <x>321</x>
-     <y>205</y>
+     <x>329</x>
+     <y>260</y>
     </hint>
    </hints>
   </connection>
@@ -549,12 +595,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>187</x>
-     <y>132</y>
+     <x>194</x>
+     <y>196</y>
     </hint>
     <hint type="destinationlabel">
-     <x>199</x>
-     <y>243</y>
+     <x>207</x>
+     <y>298</y>
     </hint>
    </hints>
   </connection>
@@ -565,12 +611,60 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>337</x>
-     <y>136</y>
+     <x>345</x>
+     <y>196</y>
     </hint>
     <hint type="destinationlabel">
-     <x>335</x>
-     <y>243</y>
+     <x>343</x>
+     <y>298</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>label_2</receiver>
+   <slot>changeLargoSecuencia(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>522</x>
+     <y>30</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>341</x>
+     <y>205</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>label_2</sender>
+   <signal>blockButton(bool)</signal>
+   <receiver>spinBox</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>235</x>
+     <y>193</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>501</x>
+     <y>13</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>label_2</sender>
+   <signal>largoSecuencia(int)</signal>
+   <receiver>spinBox</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>345</x>
+     <y>209</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>509</x>
+     <y>27</y>
     </hint>
    </hints>
   </connection>
