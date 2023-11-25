@@ -20,14 +20,15 @@ public:
     void resetVar();
 
     QTimer *timer;
-    QList<QColor> secuencia;
-    QList<QColor> secuenciaMuestra;
+    QList<QColor> secuencia;        //Secuencia de colores
+    QList<QColor> secuenciaMuestra; //Secuencia a mostrar con los grises entre medio
 
-    int currentColorIndex;
-    int indexSec=0, largoSec=5;
-    int punt = 0;
-    bool wins = true;
-    int indexCreate= 0;
+    int currentColorIndex;          //Indice de color actual a mostrar
+    int indexSec=0;                 //Indice de secuencia actual
+    int largoSec=2;                 //Largo de secuencia
+    int punt = 0;                   //Puntaje
+    bool jugando = true;            //Verifica fin de juego
+    int indexCreate= 0;             //Indice de creacion de secuencia
 
     
 private slots:
@@ -38,7 +39,7 @@ private slots:
 
 signals: 
     void puntaje(int);
-    void fallo(bool);
     void mensaje(QString);
     void blockButton(bool);
+    void blockButtonColor(bool);
 };

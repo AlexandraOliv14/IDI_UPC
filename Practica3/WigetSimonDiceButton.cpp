@@ -1,7 +1,5 @@
 #include "WigetSimonDiceButton.h"
 
-#include <QDebug>
-
 WigetSimonDiceButton::WigetSimonDiceButton(QWidget *parent) : QPushButton(parent) {
     connect(this, SIGNAL(clicked()), this, SLOT(textoComoEntero()));   // connect(this, SIGNAL(QPushButton::clicked()), this,SLOT(textoComoEntero()));
 
@@ -10,7 +8,6 @@ WigetSimonDiceButton::WigetSimonDiceButton(QWidget *parent) : QPushButton(parent
 void WigetSimonDiceButton::textoComoEntero() {
     bool ok;
     QString number = this->text();
-    qDebug() << "number"<<number.split("&").last();
     int num= number.split("&").last().toInt(&ok);
 
     if (ok) {

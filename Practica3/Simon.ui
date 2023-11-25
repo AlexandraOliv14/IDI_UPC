@@ -13,11 +13,11 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_5">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
-      <spacer name="horizontalSpacer">
+      <spacer name="horizontalSpacer_8">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -50,18 +50,14 @@
       </spacer>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Puntaje</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLCDNumber" name="puntaje"/>
-       </item>
-      </layout>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Puntaje</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLCDNumber" name="puntaje"/>
      </item>
      <item>
       <spacer name="horizontalSpacer_6">
@@ -79,11 +75,54 @@
     </layout>
    </item>
    <item>
-    <widget class="QLabel" name="label_3">
-     <property name="text">
-      <string/>
+    <spacer name="verticalSpacer_6">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
-    </widget>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_6">
+     <item>
+      <spacer name="horizontalSpacer_7">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Bienvenido, inicie partida para comenzar</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_9">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_5">
@@ -290,9 +329,9 @@
    <header>WigetSimonDice.h</header>
    <slots>
     <signal>puntaje(int)</signal>
-    <signal>fallo(bool)</signal>
     <signal>mensaje(QString)</signal>
     <signal>blockButton(bool)</signal>
+    <signal>blockButtonColor(bool)</signal>
     <slot>secuenciaColor()</slot>
     <slot>changeBackground(QColor)</slot>
     <slot>machSecuencia(int)</slot>
@@ -334,12 +373,12 @@
    <slot>secuenciaColor()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>186</x>
-     <y>43</y>
+     <x>166</x>
+     <y>36</y>
     </hint>
     <hint type="destinationlabel">
      <x>279</x>
-     <y>132</y>
+     <y>135</y>
     </hint>
    </hints>
   </connection>
@@ -355,7 +394,7 @@
     </hint>
     <hint type="destinationlabel">
      <x>279</x>
-     <y>132</y>
+     <y>135</y>
     </hint>
    </hints>
   </connection>
@@ -371,7 +410,7 @@
     </hint>
     <hint type="destinationlabel">
      <x>279</x>
-     <y>132</y>
+     <y>135</y>
     </hint>
    </hints>
   </connection>
@@ -387,7 +426,7 @@
     </hint>
     <hint type="destinationlabel">
      <x>279</x>
-     <y>132</y>
+     <y>135</y>
     </hint>
    </hints>
   </connection>
@@ -403,7 +442,7 @@
     </hint>
     <hint type="destinationlabel">
      <x>276</x>
-     <y>132</y>
+     <y>135</y>
     </hint>
    </hints>
   </connection>
@@ -419,7 +458,7 @@
     </hint>
     <hint type="destinationlabel">
      <x>277</x>
-     <y>132</y>
+     <y>135</y>
     </hint>
    </hints>
   </connection>
@@ -431,11 +470,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>279</x>
-     <y>132</y>
+     <y>135</y>
     </hint>
     <hint type="destinationlabel">
-     <x>392</x>
-     <y>41</y>
+     <x>413</x>
+     <y>17</y>
     </hint>
    </hints>
   </connection>
@@ -447,11 +486,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>195</x>
-     <y>133</y>
+     <y>136</y>
     </hint>
     <hint type="destinationlabel">
-     <x>79</x>
-     <y>73</y>
+     <x>207</x>
+     <y>78</y>
     </hint>
    </hints>
   </connection>
@@ -463,11 +502,75 @@
    <hints>
     <hint type="sourcelabel">
      <x>193</x>
-     <y>137</y>
+     <y>140</y>
     </hint>
     <hint type="destinationlabel">
      <x>161</x>
      <y>33</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>label_2</sender>
+   <signal>blockButtonColor(bool)</signal>
+   <receiver>wigetSimonDiceButton</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>351</x>
+     <y>140</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>253</x>
+     <y>201</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>label_2</sender>
+   <signal>blockButtonColor(bool)</signal>
+   <receiver>pushButton_11</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>323</x>
+     <y>140</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>321</x>
+     <y>205</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>label_2</sender>
+   <signal>blockButtonColor(bool)</signal>
+   <receiver>pushButton_9</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>187</x>
+     <y>132</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>243</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>label_2</sender>
+   <signal>blockButtonColor(bool)</signal>
+   <receiver>pushButton_10</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>337</x>
+     <y>136</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>335</x>
+     <y>243</y>
     </hint>
    </hints>
   </connection>
