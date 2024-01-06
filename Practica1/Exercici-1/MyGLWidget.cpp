@@ -65,32 +65,32 @@ void MyGLWidget::pintaMolinet(glm::vec3 posicioBase, float escala)
 
   // Pintem Aspa  
   glBindVertexArray(VAOAspa);  
-  modelTransformAspa(glm::vec3(0.0), 0.0f, 1.0f, glm::vec3(1.f,0.f,0.f));
+  modelTransformAspa(glm::vec3(0.0), aspaIni, 1.0f, glm::vec3(1.f,0.f,0.f));
   glDrawArrays(GL_TRIANGLES, 0, 6);
 
   // Pintem Aspa  
   glBindVertexArray(VAOAspa);  
-  modelTransformAspa(glm::vec3(0.0), 60.0f, 1.0f, glm::vec3(0.f,1.f,0.f));
+  modelTransformAspa(glm::vec3(0.0), aspaIni + 60.0f, 1.0f, glm::vec3(0.f,1.f,0.f));
   glDrawArrays(GL_TRIANGLES, 0, 6); 
 
   // Pintem Aspa  
   glBindVertexArray(VAOAspa);  
-  modelTransformAspa(glm::vec3(0.0), 120.0f, 1.0f, glm::vec3(0.f,0.f,1.f));
+  modelTransformAspa(glm::vec3(0.0), aspaIni + 120.0f, 1.0f, glm::vec3(0.f,0.f,1.f));
   glDrawArrays(GL_TRIANGLES, 0, 6); 
 
   // Pintem Aspa  
   glBindVertexArray(VAOAspa);  
-  modelTransformAspa(glm::vec3(0.0), 180.0f, 1.0f, glm::vec3(1.f,1.f,0.f));
+  modelTransformAspa(glm::vec3(0.0), aspaIni + 180.0f, 1.0f, glm::vec3(1.f,1.f,0.f));
   glDrawArrays(GL_TRIANGLES, 0, 6); 
 
   // Pintem Aspa  
   glBindVertexArray(VAOAspa);  
-  modelTransformAspa(glm::vec3(0.0), 240.0f, 1.0f, glm::vec3(0.f,1.f,1.f));
+  modelTransformAspa(glm::vec3(0.0), aspaIni + 240.0f, 1.0f, glm::vec3(0.f,1.f,1.f));
   glDrawArrays(GL_TRIANGLES, 0, 6); 
 
   // Pintem Aspa  
   glBindVertexArray(VAOAspa);  
-  modelTransformAspa(glm::vec3(0.0), 300.0f, 1.0f, glm::vec3(1.f,0.f,1.f));
+  modelTransformAspa(glm::vec3(0.0), aspaIni + 300.0f, 1.0f, glm::vec3(1.f,0.f,1.f));
   glDrawArrays(GL_TRIANGLES, 0, 6); 
  }
 
@@ -113,8 +113,10 @@ void MyGLWidget::keyPressEvent(QKeyEvent* event)
   makeCurrent();
   switch (event->key()) {
     case Qt::Key_A: 
+      aspaIni = aspaIni-2;
     	break;
-    case Qt::Key_D: 
+    case Qt::Key_D:
+      aspaIni = aspaIni+2;
     	break;		
     case Qt::Key_3: 
     	break;		

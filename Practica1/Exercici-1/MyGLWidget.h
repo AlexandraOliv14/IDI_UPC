@@ -40,6 +40,9 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     
     void modelTransformPal(glm::vec3 posicioBase, float escala);
     void modelTransformAspa(glm::vec3 posicioPivot, float angle, float escala, glm::vec3 color);
+
+    //Variables locales
+    float aspaIni = 0.f;
     
     // program
     QOpenGLShaderProgram *program;
