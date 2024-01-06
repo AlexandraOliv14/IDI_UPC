@@ -47,14 +47,10 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     // attribute locations
     GLuint vertexLoc;
     GLuint colorLoc;
-
-    //estado de muestra de molinos
-    bool estadoMolinos= true;
     
     // uniform locations
     GLuint TGLoc;
-    GLuint colorAspLoc;
-    GLuint escalaLoc;
+    GLuint NewColorLoc;
 
     // VAOs
     GLuint VAOPal;
@@ -62,7 +58,4 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
 
     // viewport
     GLint ample, alt;    
-
-    //inicial rotacion
-    float rot= 0.0f; 
 };

@@ -15,10 +15,10 @@ MyGLWidget::~MyGLWidget ()
 
 void MyGLWidget::initializeGL ()
 {
-  // Cal inicialitzar l'ús de les funcions d'OpenGL
+  // Necesario inicializar las funciones OpenGL
   initializeOpenGLFunctions();
   
-  glClearColor (0.5, 0.7, 1.0, 1.0); // defineix color de fons (d'esborrat)
+  glClearColor (0.5, 0.7, 1.0, 1.0); // define color de fondo
   carregaShaders();
   creaBuffersPal();
   creaBuffersAspa();
@@ -28,20 +28,19 @@ void MyGLWidget::initializeGL ()
 void MyGLWidget::modelTransformPal(glm::vec3 posicioBase, float escala)
 {
   glm::mat4 TG(1.0f);
-  TG = glm::translate(TG, posicioBase); //Traslada a la posicion inicial
-  glUniformMatrix4fv(TGLoc, 1, GL_FALSE, &TG[0][0]); //Manda la posicion inicial
-  glUniform1f(escalaLoc, escala);  //manda la escalacion (da el tamaño al palo)
+  glUniformMatrix4fv(TGLoc, 1, GL_FALSE, &TG[0][0]);
+
+  glUniform3fv(NewColorLoc, 1, &glm::vec3(1.f,1.f,1.f)[0]);
 }
 
-void MyGLWidget::modelTransformAspa(glm::vec3 posicioPivot, float angle, float escala, glm::vec3 color)
+void MyGLWidget::modelTransformAspa(glm::vec3 posicioPivot, float angle, float escal, glm::vec3 color)
 {
-  glm::mat4 TG(1.0f);
-  TG = glm::translate(TG, posicioPivot); //Trasalada a la posicion inicial
-  TG = glm::rotate(TG, glm::radians(angle), glm::vec3(0.0f, 0.0f, 1.0f)); //rota en el eje z
-  glUniformMatrix4fv(TGLoc, 1, GL_FALSE, &TG[0][0]); //Manda la informacion de la traslacion y rotacion
 
-  glUniform3f(colorAspLoc, color.x, color.y, color.z); //manda el color 
-  glUniform1f(escalaLoc, escala); //manda la escalacion (da el tamaño a la aspa)
+  glm::mat4 TG(1.0f);
+  TG=rotate(TG, glm::radians(angle), glm::vec3(0,0,1));
+  glUniformMatrix4fv(TGLoc, 1, GL_FALSE, &TG[0][0]);
+
+  glUniform3fv(NewColorLoc, 1, &color[0]);
 
 }
 
@@ -53,59 +52,46 @@ void MyGLWidget::paintGL ()
   
   glClear (GL_COLOR_BUFFER_BIT);  // Esborrem el frame-buffer
 
-  if(estadoMolinos){
-    pintaMolinet(glm::vec3(0.0,0.0,0.0), 1.0f); //Pinta molino inicial
-  }else{                                        //Pinta los 3 molinos establecidos (manda su posicion y escalacion)
-    pintaMolinet(glm::vec3(0.0,0.0,0.0), 0.25f);    
-    pintaMolinet(glm::vec3(-0.5,0.25,0.0), 0.35f);  
-    pintaMolinet(glm::vec3(0.5,-0.5,0.0), 0.45f); 
-  }
+  pintaMolinet(glm::vec3(0,0,0), 1.0f);  
 
 }
 
 void MyGLWidget::pintaMolinet(glm::vec3 posicioBase, float escala)
 {
-  glm::vec3 blanco(1.0f, 1.0f,1.0f);
-  glm::vec3 rojo(1.0f, 0.0f,0.0f);
-  glm::vec3 verde(0.0f, 1.0f,0.0f);
-  glm::vec3 azul(0.0f, 0.0f,1.0f);
-  glm::vec3 amarillo(1.0f, 1.0f,0.0f);
-  glm::vec3 cyan(0.0f, 1.0f,1.0f);
-  glm::vec3 magenta(1.0f, 0.0f,1.0f);
-
-
   // Pintem Pal
   glBindVertexArray(VAOPal);  
-  modelTransformPal(posicioBase, escala);
+  modelTransformPal(glm::vec3(0.0), 1.0f);
   glDrawArrays(GL_TRIANGLES, 0, 6); 
 
   // Pintem Aspa  
-  glBindVertexArray(VAOAspa);
-  modelTransformAspa(posicioBase, rot, escala, rojo);
-  glDrawArrays(GL_TRIANGLES, 0, 6);
-
   glBindVertexArray(VAOAspa);  
-  modelTransformAspa(posicioBase, rot+60, escala, verde);
+  modelTransformAspa(glm::vec3(0.0), 0.0f, 1.0f, glm::vec3(1.f,0.f,0.f));
   glDrawArrays(GL_TRIANGLES, 0, 6);
 
+  // Pintem Aspa  
   glBindVertexArray(VAOAspa);  
-  modelTransformAspa(posicioBase, rot + 120.0f, escala, azul);
-  glDrawArrays(GL_TRIANGLES, 0, 6);
+  modelTransformAspa(glm::vec3(0.0), 60.0f, 1.0f, glm::vec3(0.f,1.f,0.f));
+  glDrawArrays(GL_TRIANGLES, 0, 6); 
 
+  // Pintem Aspa  
   glBindVertexArray(VAOAspa);  
-  modelTransformAspa(posicioBase, rot + 180.0f, escala, amarillo);
-  glDrawArrays(GL_TRIANGLES, 0, 6);
+  modelTransformAspa(glm::vec3(0.0), 120.0f, 1.0f, glm::vec3(0.f,0.f,1.f));
+  glDrawArrays(GL_TRIANGLES, 0, 6); 
 
+  // Pintem Aspa  
   glBindVertexArray(VAOAspa);  
-  modelTransformAspa(posicioBase, rot + 240.0f, escala, cyan);
-  glDrawArrays(GL_TRIANGLES, 0, 6);
+  modelTransformAspa(glm::vec3(0.0), 180.0f, 1.0f, glm::vec3(1.f,1.f,0.f));
+  glDrawArrays(GL_TRIANGLES, 0, 6); 
 
+  // Pintem Aspa  
   glBindVertexArray(VAOAspa);  
-  modelTransformAspa(posicioBase, rot + 300.0f, escala, magenta);
-  glDrawArrays(GL_TRIANGLES, 0, 6);
+  modelTransformAspa(glm::vec3(0.0), 240.0f, 1.0f, glm::vec3(0.f,1.f,1.f));
+  glDrawArrays(GL_TRIANGLES, 0, 6); 
 
-  glUniform3f(colorAspLoc, blanco.x, blanco.y, blanco.z);
-
+  // Pintem Aspa  
+  glBindVertexArray(VAOAspa);  
+  modelTransformAspa(glm::vec3(0.0), 300.0f, 1.0f, glm::vec3(1.f,0.f,1.f));
+  glDrawArrays(GL_TRIANGLES, 0, 6); 
  }
 
 void MyGLWidget::resizeGL (int w, int h)
@@ -126,21 +112,17 @@ void MyGLWidget::keyPressEvent(QKeyEvent* event)
 {
   makeCurrent();
   switch (event->key()) {
-    case Qt::Key_A:
-      rot -= 2;
+    case Qt::Key_A: 
     	break;
-    case Qt::Key_D:
-      rot += 2;
+    case Qt::Key_D: 
     	break;		
-    case Qt::Key_3:
-      estadoMolinos = false;
+    case Qt::Key_3: 
     	break;		
-    case Qt::Key_1:
-      estadoMolinos = true;
+    case Qt::Key_1: 
     	break;		
     default: event->ignore(); break;
   }
-  update(); //refresca la pantalla
+  update();
 }
 
 void MyGLWidget::creaBuffersPal ()
@@ -269,7 +251,6 @@ void MyGLWidget::carregaShaders()
   
   // Obtenim els identificadors dels uniforms
   TGLoc = glGetUniformLocation(program->programId(), "TG"); 
-  colorAspLoc = glGetUniformLocation(program->programId(), "colorAsp"); 
+  NewColorLoc = glGetUniformLocation(program->programId(), "newCOLOR"); 
 
-  escalaLoc = glGetUniformLocation(program->programId(), "escala"); 
 }
