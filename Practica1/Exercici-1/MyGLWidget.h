@@ -43,6 +43,7 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
 
     //Variables locales
     float aspaIni = 0.f;
+    bool unaAspa = true; 
     
     // program
     QOpenGLShaderProgram *program;

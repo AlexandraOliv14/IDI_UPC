@@ -28,6 +28,10 @@ void MyGLWidget::initializeGL ()
 void MyGLWidget::modelTransformPal(glm::vec3 posicioBase, float escala)
 {
   glm::mat4 TG(1.0f);
+
+  TG = translate(TG, posicioBase);
+  TG = scale(TG, escala*(glm::vec3(1.f)));
+
   glUniformMatrix4fv(TGLoc, 1, GL_FALSE, &TG[0][0]);
 
   glUniform3fv(NewColorLoc, 1, &glm::vec3(1.f,1.f,1.f)[0]);
@@ -37,7 +41,11 @@ void MyGLWidget::modelTransformAspa(glm::vec3 posicioPivot, float angle, float e
 {
 
   glm::mat4 TG(1.0f);
-  TG=rotate(TG, glm::radians(angle), glm::vec3(0,0,1));
+
+  TG = translate(TG, posicioPivot);
+  TG = rotate(TG, glm::radians(angle), glm::vec3(0,0,1));
+  TG = scale(TG, escal*(glm::vec3(1.f)));
+  
   glUniformMatrix4fv(TGLoc, 1, GL_FALSE, &TG[0][0]);
 
   glUniform3fv(NewColorLoc, 1, &color[0]);
@@ -52,45 +60,50 @@ void MyGLWidget::paintGL ()
   
   glClear (GL_COLOR_BUFFER_BIT);  // Esborrem el frame-buffer
 
-  pintaMolinet(glm::vec3(0,0,0), 1.0f);  
-
+  if(unaAspa){
+    pintaMolinet(glm::vec3(0,0,0), 1.f);
+  }else{
+    pintaMolinet(glm::vec3(0,0,0), 0.25);
+    pintaMolinet(glm::vec3(-0.5,0.25,0.0), 0.35);  
+    pintaMolinet(glm::vec3(0.5,-0.5,0.0), 0.45); 
+  } 
 }
 
 void MyGLWidget::pintaMolinet(glm::vec3 posicioBase, float escala)
 {
   // Pintem Pal
   glBindVertexArray(VAOPal);  
-  modelTransformPal(glm::vec3(0.0), 1.0f);
+  modelTransformPal(posicioBase, escala);
   glDrawArrays(GL_TRIANGLES, 0, 6); 
 
   // Pintem Aspa  
   glBindVertexArray(VAOAspa);  
-  modelTransformAspa(glm::vec3(0.0), aspaIni, 1.0f, glm::vec3(1.f,0.f,0.f));
+  modelTransformAspa(posicioBase, aspaIni, escala, glm::vec3(1.f,0.f,0.f));
   glDrawArrays(GL_TRIANGLES, 0, 6);
 
   // Pintem Aspa  
   glBindVertexArray(VAOAspa);  
-  modelTransformAspa(glm::vec3(0.0), aspaIni + 60.0f, 1.0f, glm::vec3(0.f,1.f,0.f));
+  modelTransformAspa(posicioBase, aspaIni + 60.0f, escala, glm::vec3(0.f,1.f,0.f));
   glDrawArrays(GL_TRIANGLES, 0, 6); 
 
   // Pintem Aspa  
   glBindVertexArray(VAOAspa);  
-  modelTransformAspa(glm::vec3(0.0), aspaIni + 120.0f, 1.0f, glm::vec3(0.f,0.f,1.f));
+  modelTransformAspa(posicioBase, aspaIni + 120.0f, escala, glm::vec3(0.f,0.f,1.f));
   glDrawArrays(GL_TRIANGLES, 0, 6); 
 
   // Pintem Aspa  
   glBindVertexArray(VAOAspa);  
-  modelTransformAspa(glm::vec3(0.0), aspaIni + 180.0f, 1.0f, glm::vec3(1.f,1.f,0.f));
+  modelTransformAspa(posicioBase, aspaIni + 180.0f, escala, glm::vec3(1.f,1.f,0.f));
   glDrawArrays(GL_TRIANGLES, 0, 6); 
 
   // Pintem Aspa  
   glBindVertexArray(VAOAspa);  
-  modelTransformAspa(glm::vec3(0.0), aspaIni + 240.0f, 1.0f, glm::vec3(0.f,1.f,1.f));
+  modelTransformAspa(posicioBase, aspaIni + 240.0f, escala, glm::vec3(0.f,1.f,1.f));
   glDrawArrays(GL_TRIANGLES, 0, 6); 
 
   // Pintem Aspa  
   glBindVertexArray(VAOAspa);  
-  modelTransformAspa(glm::vec3(0.0), aspaIni + 300.0f, 1.0f, glm::vec3(1.f,0.f,1.f));
+  modelTransformAspa(posicioBase, aspaIni + 300.0f, escala, glm::vec3(1.f,0.f,1.f));
   glDrawArrays(GL_TRIANGLES, 0, 6); 
  }
 
@@ -119,8 +132,10 @@ void MyGLWidget::keyPressEvent(QKeyEvent* event)
       aspaIni = aspaIni+2;
     	break;		
     case Qt::Key_3: 
+      unaAspa = false;
     	break;		
     case Qt::Key_1: 
+      unaAspa= true;
     	break;		
     default: event->ignore(); break;
   }
