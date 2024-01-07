@@ -7,9 +7,18 @@ in float fmatshin;
 in vec3  fvertex;
 in vec3  fnormal;
 
-const vec3 llumAmbient = vec3(0.2, 0.2, 0.2);
+const vec3 llumAmbient = vec3(0.1, 0.1, 0.1);
 
 out vec4 FragColor;
+
+uniform vec3 colFocus;
+uniform vec3 posFocus;
+
+uniform vec3 colFocus1;
+uniform vec3 posFocus1;
+
+uniform vec3 colFocus2;
+uniform vec3 posFocus2;
 
 
 vec3 Ambient() {
@@ -47,5 +56,22 @@ vec3 Especular (vec3 NormSCO, vec3 L, vec3 vertSCO, vec3 colFocus)
 
 void main()
 {
-    FragColor = vec4(fmatdiff, 1);
+    vec3 normalizeSCO = normalize(fnormal);
+
+    vec3 luzDirecta = normalize( posFocus - fvertex);
+    vec3 luzDifuza = Difus (normalizeSCO, luzDirecta, colFocus);
+    vec3 lusEsp = Especular (normalizeSCO, luzDirecta, fvertex, colFocus);
+
+    vec3 luzDirecta1 = normalize( posFocus1 - fvertex);
+    vec3 luzDifuza1 = Difus (normalizeSCO, luzDirecta1, colFocus1);
+    vec3 lusEsp1 = Especular (normalizeSCO, luzDirecta1, fvertex, colFocus1);
+
+    vec3 luzDirecta2 = normalize( posFocus2 - fvertex);
+    vec3 luzDifuza2 = Difus (normalizeSCO, luzDirecta2, colFocus2);
+    vec3 lusEsp2 = Especular (normalizeSCO, luzDirecta2, fvertex, colFocus2);
+
+
+    vec3 color = Ambient() + luzDifuza + lusEsp+ luzDifuza1 + lusEsp1+ luzDifuza2 + lusEsp2;
+
+    FragColor = vec4(color, 1);
 }

@@ -27,8 +27,11 @@ void main()
     fmatdiff = matdiff;
     fmatspec = matspec;
     fmatshin = matshin;
-    fvertex = vertex; // CALCULEU CORRECTAMENT
-    fnormal = normal; // CALCULEU CORRECTAMENT
 
-    gl_Position = Proj * View * TG * vec4 (vertex, 1.0);
+    mat3 normalMatrix = inverse(transpose(mat3(View * TG)));
+
+    fnormal = vec3(normalMatrix * normal); 
+    fvertex = (View * TG * vec4(vertex, 1)).xyz;
+
+    gl_Position = Proj * View * TG * vec4(vertex, 1.0);
 }
