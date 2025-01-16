@@ -14,4 +14,4 @@ Realizacion de un Juego de Simon Dice con diferentes velocidades y largos de ser
 
 ## Practica 4
 Auto con luz en el frente
-![practica2]([https://github.com/AlexandraOliv14/IDI_UPC/blob/main/Practica2/escenaFinal.png](https://github.com/AlexandraOliv14/IDI_UPC/blob/main/Practica4/Ejercicio4.png)
+![practica2](https://github.com/AlexandraOliv14/IDI_UPC/blob/main/Practica4/Ejercicio4.png)
